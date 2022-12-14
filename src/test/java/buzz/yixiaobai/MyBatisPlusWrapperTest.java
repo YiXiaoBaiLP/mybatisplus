@@ -59,11 +59,28 @@ public class MyBatisPlusWrapperTest {
     @Test
     public void test03(){
         // 删除邮箱为空的数据
+        // 添加了逻辑删除所以这里是Update
         // UPDATE t_user SET is_deleted=1 WHERE is_deleted=0 AND (email IS NULL)
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.isNull("email");
         int count = userMapper.delete(queryWrapper);
         System.out.println("受影响的行数：" + count);
+    }
 
+    @Test
+    public void testUpdate(){
+        // 将张三修改为李四
+        // UPDATE t_user SET user_name=? WHERE is_deleted=0 AND (user_name = ?)
+        // UPDATE t_user SET user_name=? WHERE is_deleted=0 AND (user_name = ? OR user_name = ?)
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper
+                .eq("user_name", "张三")
+                .or()
+                .eq("user_name", "张三1");
+        User user = new User();
+        user.setName("李四");
+        // 当第一个参数为null时，会变成查询
+        int row = userMapper.update(user, queryWrapper);
+        System.out.println("受影响的行数：" + row);
     }
 }
