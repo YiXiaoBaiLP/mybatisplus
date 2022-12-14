@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * MyBatisPlus Wrapper 的使用
@@ -104,5 +105,18 @@ public class MyBatisPlusWrapperTest {
         user.setName("小红");
         user.setEmail("test@test.com");
         userMapper.update(user, queryWrapper);
+    }
+
+    /**
+     * 指定select查询的字段
+     */
+    @Test
+    public void testSelectSon() {
+        // SELECT user_name,email FROM t_user WHERE is_deleted=0
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        // 设置要查询的字段名称
+        queryWrapper.select("user_name", "email");
+        List<Map<String, Object>>  userList = userMapper.selectMaps(queryWrapper);
+        userList.forEach(System.out::println);
     }
 }
