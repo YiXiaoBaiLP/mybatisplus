@@ -67,6 +67,9 @@ public class MyBatisPlusWrapperTest {
         System.out.println("受影响的行数：" + count);
     }
 
+    /**
+     * 条件优先级
+     */
     @Test
     public void testUpdate(){
         // 将张三修改为李四
@@ -82,5 +85,24 @@ public class MyBatisPlusWrapperTest {
         // 当第一个参数为null时，会变成查询
         int row = userMapper.update(user, queryWrapper);
         System.out.println("受影响的行数：" + row);
+    }
+
+    /**
+     * 条件的优先级
+     */
+    @Test
+    public void testPriority(){
+        // 将用户名中包含有a并且（年龄大于20或邮箱为null）的用户信息修改
+        // UPDATE t_user SET user_name=?, email=? WHERE is_deleted=0 AND (user_name LIKE ? AND (age > ? OR email IS NULL))
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("user_name", "a")
+                // lambda的条件，先执行
+                // 当前条件的优先级高于外部
+                // default Children and(Consumer<Param> consumer)
+                .and(i -> i.gt("age", 20).or().isNull("email"));
+        User user = new User();
+        user.setName("小红");
+        user.setEmail("test@test.com");
+        userMapper.update(user, queryWrapper);
     }
 }
