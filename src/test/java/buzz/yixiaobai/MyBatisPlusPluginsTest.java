@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Map;
+
 /**
  * MyBatisPlus 分页插件测试
  */
@@ -29,4 +31,32 @@ public class MyBatisPlusPluginsTest {
         System.out.println("打印分页信息：" + page);
     }
 
+    /**
+     * 分页信息中的所有参数
+     */
+    @Test
+    public void pageTest02(){
+        Page<User> page = new Page<>(2, 2);
+        userMapper.selectPage(page, null);
+        // 获取记录信息
+        System.out.println(page.getRecords());
+        // 获取页数
+        System.out.println(page.getPages());
+        // 获取总数
+        System.out.println(page.getTotal());
+        // 获取又没有下一页
+        System.out.println(page.hasNext());
+        // 获取有没有上一页
+        System.out.println(page.hasPrevious());
+    }
+
+    /**
+     * 自定义的分页插件来使用查询功能
+     */
+    @Test
+    public void pageTest03(){
+        Page<User> page = new Page<>(2, 1);
+        Page<User> userMap = userMapper.selectPageVo(page, 20);
+        System.out.println(userMap);
+    }
 }

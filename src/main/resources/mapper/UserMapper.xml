@@ -6,6 +6,10 @@
 <mapper namespace="buzz.yixiaobai.mapper.UserMapper">
 
     <select id="selectById" resultType="java.util.HashMap" parameterType="java.lang.Long">
-        select id, name, age, email from user where id = #{id}
+        select uid, user_name, age, email from user where id = #{id}
+    </select>
+
+    <select id="selectPageVo" resultType="User">
+        select uid, user_name, age, email from t_user where age > #{age}
     </select>
 </mapper>
