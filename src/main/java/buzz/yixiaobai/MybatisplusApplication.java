@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("buzz.yixiaobai.mapper")
+//@MapperScan("buzz.yixiaobai.mapper") // 将此配置移动到配置类中
 public class MybatisplusApplication {
 
     public static void main(String[] args) {
